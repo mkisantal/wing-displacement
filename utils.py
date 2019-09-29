@@ -23,6 +23,8 @@ class WingDataset(Dataset):
             for run_id in test_ids:
                 df = df_full.loc[df_full['run_id'] != run_id] if df is None else df.loc[df['run_id']  != run_id] 
         self.df = df
+        print('Partition contains {} samples.'.format(len(self.df)))
+
         
         self.transforms = transforms
         
@@ -48,7 +50,7 @@ class WingDataset(Dataset):
     def __getitem__(self, idx):
         pil_img = self.load_image(idx)
         if self.transforms is not None:
-            torch_image = self.transform(pil_img)
+            torch_image = self.transforms(pil_img)
         else:
             torch_image = pil_img
         y = self.df.iloc[idx]['abs_dy']
