@@ -32,7 +32,7 @@ class WingDataset(Dataset):
         ann_file = sorted(os.listdir(self.root_dir))[0]
         with open (os.path.join(self.root_dir, ann_file), 'r') as f:
             df = pd.read_csv(f, sep=',', header=None)
-            df.columns = ['filename', 'y', 'run_id', 'run_counter', 't', 'experiment', 'measurement', 'file_identifier']
+            df.columns = ['filename', 'abs_dy', 'run_id', 'run_counter', 't', 'experiment', 'measurement', 'file_identifier', 'relative_dy']
             return df
         
     def load_image(self, index):
@@ -51,7 +51,7 @@ class WingDataset(Dataset):
             torch_image = self.transform(pil_img)
         else:
             torch_image = pil_img
-        y = self.df.iloc[idx]['y']
+        y = self.df.iloc[idx]['abs_dy']
         return torch_image, y
     
     
